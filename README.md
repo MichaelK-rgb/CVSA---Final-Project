@@ -11,7 +11,7 @@ Tool detection and tool usage classification in OR footage are crucial requireme
 After several augmentations and 'horizontal flip', the class distribution of the dataset is as follows:
 ![image](https://user-images.githubusercontent.com/65919086/209871355-0f8f0ab5-cd4a-4dd2-b721-53352f359e65.png)
 
-# Experiments 
+# Model 
 We focused on 2 tasks, showcasing the tradeoff between performance and speed/ complexity: 
 -	Creating a model to classify tool usage in *Real-Time*
 -	Creating a model to evaluate pre-recorded video with focus on *Accuracy*  
@@ -20,3 +20,7 @@ For this purpose, we experimented with various YOLOv5 models: nano, small and XL
 
 ![image](https://user-images.githubusercontent.com/65919086/209871898-aeb83b87-81de-412f-adc0-c1b261f89426.png)
 
+# Smoothing - sliding window, confidence level threshold
+The basic principle of a ‘sliding window’ smoothing means basing the predicted class in each frame on the most predicted label in the previous ‘k’ frames (in the paper k=15). This smoothing is meant to reduce the tool usage misclassification affected by false detections of our object detection model. To experiment with an upgraded approach, a confidence level threshold was applied to the check the current frame’s predicted YOLO bounding boxes. A different threshold was applied for each model size based on the average confidence level that was observed on the test videos (nano-0.81, small-0.85, XL- 0.87). If the confidence for a detected object is higher than the selected threshold, the detected class is added to the window. When it is lower, the previously detected class is appended to the sliding window. This simple modification reduced the misclassification in certain situations where the tool was occluded or held in a previously unseen position.
+
+![image](https://user-images.githubusercontent.com/65919086/209872280-2ef3e072-04be-41f1-963c-409ce66c91da.png)
