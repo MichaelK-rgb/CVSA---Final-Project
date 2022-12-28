@@ -9,6 +9,7 @@ Tool detection and tool usage classification in OR footage are crucial requireme
          
 # Data   
 The dataset labels 8 classes of interactions of hand + tools:
+
 {Right_Scissors, Left_Scissors ,Right_Needle_driver, Left_Needle_driver, Right_Forceps, Left_Forceps ,Right_Empty, Left_Empty}
 
 After several augmentations and 'horizontal flip', the class distribution of the dataset is as follows:
