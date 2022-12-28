@@ -31,6 +31,6 @@ The basic principle of a ‘sliding window’ smoothing means basing the predict
 
 The Smoothing process using the confidence level threshold and sliding window combination proved to be effective in reducing all scores and misclassification in tool usage and tool usage transitions.
 
-# reference to YOLOv5 repo
+# Reference to YOLOv5 repo
 https://github.com/ultralytics/yolov5
 
