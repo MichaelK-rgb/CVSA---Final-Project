@@ -8,5 +8,10 @@ Tool detection and tool usage classification in OR footage are crucial requireme
          Classification labels: [Right_Needle_driver, Left_Forceps]
          
 # Data       
+After several augmentations and 'horizontal flip', the class distribution of the dataset is as follows:
 ![image](https://user-images.githubusercontent.com/65919086/209871355-0f8f0ab5-cd4a-4dd2-b721-53352f359e65.png)
 
+# Experiments 
+We focused on 2 tasks, showcasing the tradeoff between performance and speed/ complexity: 
+-	Creating a model to classify tool usage in Real-Time
+-	Creating a model to evaluate pre-recorded video with focus on Accuracy  
