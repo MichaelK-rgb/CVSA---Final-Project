@@ -13,5 +13,5 @@ After several augmentations and 'horizontal flip', the class distribution of the
 
 # Experiments 
 We focused on 2 tasks, showcasing the tradeoff between performance and speed/ complexity: 
--	Creating a model to classify tool usage in Real-Time
--	Creating a model to evaluate pre-recorded video with focus on Accuracy  
+-	Creating a model to classify tool usage in *Real-Time*
+-	Creating a model to evaluate pre-recorded video with focus on *Accuracy*  
