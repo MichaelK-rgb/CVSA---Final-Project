@@ -22,7 +22,7 @@ We focused on 2 tasks, showcasing the tradeoff between performance and speed/ co
 -	Creating a model to classify tool usage in *Real-Time*
 -	Creating a model to evaluate pre-recorded video with focus on *Accuracy*  
 
-For this purpose, we experimented with various YOLOv5 models: nano, small and XLarge. finally choosing YOLOv5s for the Real-Time task, and YOLOv5X for the pre-recorded evaluation task. results with the YOLOv5small model:
+For this purpose, we experimented with various YOLOv5 models: nano, small and XLarge. finally choosing YOLOv5s for the Real-Time task, and YOLOv5X for the pre-recorded evaluation task. While the XL model did perform marginally better in metrics such as mAP50, mAP75, The difference was very slim. Results with the YOLOv5 small model:
 
 ![image](https://user-images.githubusercontent.com/65919086/209872504-b36229ee-15ae-4f65-944e-8e92b8676d17.png)
 
