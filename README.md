@@ -1,6 +1,8 @@
 # ComputerVision_in_OR
 Open Surgery object detection, tool usage classification
 
+![Animation](https://user-images.githubusercontent.com/65919086/210080871-b39c3e3f-fdd3-4a0d-9348-725b0fe31ad9.gif)
+
 # Introduction 
 Tool detection and tool usage classification in OR footage are crucial requirements for future advancements in smart OR technologies such as AI driven robotic assistants as well as effective skill assessment of medical students (Goldbraikh, et al). In this project, we use the suturing skill assessment footage that was used in the 2022 study to train our own CV model for detection of hand + tool combinations and classification of tool usage.
 
