@@ -14,7 +14,8 @@ video = sys.argv[1]
 model = torch.hub.load('yolov5', 'custom', path=yolo_model + '.pt', source='local', force_reload=True)
 model.cuda()
 model.max_det = 2
-cap = cv2.VideoCapture(video + ".wmv")
+cap = cv2.VideoCapture(video)
+# cap = cv2.VideoCapture(video + ".wmv")
 last_frame_num = cap.get(cv2.CAP_PROP_FRAME_COUNT)
 df_right = pd.read_csv(video + "_right.txt", header=None, sep=" ")
 df_left = pd.read_csv(video + "_left.txt", header=None, sep=" ")
