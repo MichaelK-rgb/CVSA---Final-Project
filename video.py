@@ -3,9 +3,13 @@ import cv2
 import pandas as pd
 from sklearn.metrics import classification_report
 from sklearn.metrics import f1_score, accuracy_score
+import numpy as np
+from statistics import mean
+import time
 
-video = 'P023_tissue2'
-model = torch.hub.load('yolov5', 'custom', path='best.pt', source='local', force_reload=True)
+yolo_model = 'best_s'
+video = 'P026_tissue1'
+model = torch.hub.load('yolov5', 'custom', path=yolo_model + '.pt', source='local', force_reload=True)
 model.cuda()
 model.max_det = 2
 cap = cv2.VideoCapture(video + ".wmv")
@@ -17,10 +21,11 @@ df_left["dir"] = "left"
 frames = [df_right, df_left]
 result = pd.concat(frames)
 counter = -1
+conf_threshold = 0.85 if yolo_model == 'best_s' else 0.8
 
-vid_result = cv2.VideoWriter('filename.avi',
-                         cv2.VideoWriter_fourcc(*'MJPG'),
-                         30, (640, 640))
+vid_result = cv2.VideoWriter(f'{video}labeled.avi',
+                             cv2.VideoWriter_fourcc(*'MJPG'),
+                             30, (640, 640))
 
 tool_usage = {"T0": "No tool in hand",
               "T1": "Needle_driver",
@@ -43,20 +48,23 @@ classes = ["Right_Scissors",
            "Right_Forceps",
            "Left_Forceps",
            "Right_Empty",
-           "Left_Empty",
-           ]
+           "Left_Empty"]
 preds_right = []
 labels_right = []
 preds_left = []
 labels_left = []
+confidence_left = []
+confidence_right = []
 
 model.names = {x: y for x, y in enumerate(classes)}
 # Read until video is completed
+st = time.time()
+
 while cap.isOpened():
     ret, frame = cap.read()
     if ret:
         counter += 1
-        if counter == int(last_frame_num):
+        if counter == int(last_frame_num) - 1:
             break
         print(counter)
         filter_1 = result[0] < counter
@@ -70,21 +78,46 @@ while cap.isOpened():
         results = model(im_rgb)
         classes_detect_x = results.pandas().xyxy[0]["xmin"].values
         classes_detect = results.pandas().xyxy[0]["name"].values
+        classes_confidence = results.pandas().xyxy[0]['confidence'].values
+        try:
+            confidence_left.append(classes_confidence[1])
+        except:
+            pass
+        try:
+            confidence_right.append(classes_confidence[0])
+        except:
+            pass
 
         for c in classes_detect:
-            if c in classes_right.keys():
-                for i in classes_right.keys():
-                    if c == i:
-                        classes_right[i].append(1)
-                    else:
-                        classes_right[i].append(0)
+            index = np.where(classes_detect == c)[0][0]
+            if classes_confidence[index] > conf_threshold:
+                if c in classes_right.keys():
+                    for i in classes_right.keys():
+                        if c == i:
+                            classes_right[i].append(1)
+                        else:
+                            classes_right[i].append(0)
 
-            elif c in classes_left.keys():
-                for i in classes_left.keys():
-                    if c == i:
-                        classes_left[i].append(1)
-                    else:
-                        classes_left[i].append(0)
+                elif c in classes_left.keys():
+                    for i in classes_left.keys():
+                        if c == i:
+                            classes_left[i].append(1)
+                        else:
+                            classes_left[i].append(0)
+            else:
+                if c in classes_right.keys():
+                    for i in classes_right.keys():
+                        if classes_right[i][-1] == 1:
+                            classes_right[i].append(1)
+                        else:
+                            classes_right[i].append(0)
+
+                if c in classes_left.keys():
+                    for i in classes_left.keys():
+                        if classes_left[i][-1] == 1:
+                            classes_left[i].append(1)
+                        else:
+                            classes_left[i].append(0)
 
         last_k = 15
         classes_right_val = {x: sum(classes_right[x][-last_k:]) for x in classes_right.keys()}
@@ -126,7 +159,7 @@ while cap.isOpened():
                         preds_left.append(c)
             labels_right.append(tool_usage[rel.iloc[0][2]])
             labels_left.append(tool_usage[rel.iloc[1][2]])
-        cv2.imshow('Frame', frame)
+        # cv2.imshow('Frame', frame)
         vid_result.write(frame)
         if cv2.waitKey(30) & 0xFF == ord('q'):
             break
@@ -134,6 +167,8 @@ while cap.isOpened():
 cap.release()
 vid_result.release()
 cv2.destroyAllWindows()
+et = time.time()
+print('Execution time:', (et - st), 'seconds')
 
 labels_right_num = [tool_usage_lst.index(i) for i in labels_right]
 labels_left_num = [tool_usage_lst.index(i) for i in labels_left]
@@ -164,10 +199,12 @@ target_names = tool_usage.values()
 
 print("right hand")
 print(classification_report(labels_right_num, preds_right_num))
-print(f1_score(labels_right_num, preds_right_num, average='macro'))
-print(accuracy_score(labels_right_num, preds_right_num))
+print(f"F1 score: {f1_score(labels_right_num, preds_right_num, average='macro')}")
+print(f"Acc score: {accuracy_score(labels_right_num, preds_right_num)}")
+print(f'avg confidence level: {mean(confidence_right)}')
 
 print("left hand")
 print(classification_report(labels_left_num, preds_left_num))
-print(f1_score(labels_left_num, preds_left_num, average='macro'))
-print(accuracy_score(labels_left_num, preds_left_num))
+print(f"F1 score: {f1_score(labels_left_num, preds_left_num, average='macro')}")
+print(f"Acc score: {accuracy_score(labels_left_num, preds_left_num)}")
+print(f'avg confidence level: {mean(confidence_left)}')
