@@ -6,6 +6,7 @@ from sklearn.metrics import f1_score, accuracy_score
 import numpy as np
 from statistics import mean
 import time
+import sys
 
 yolo_model = 'best_s'
 video = sys.argv[1]
