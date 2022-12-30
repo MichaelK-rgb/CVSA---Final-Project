@@ -8,7 +8,8 @@ from statistics import mean
 import time
 
 yolo_model = 'best_s'
-video = 'P026_tissue1'
+video = sys.argv[1]
+# video = 'P026_tissue1'
 model = torch.hub.load('yolov5', 'custom', path=yolo_model + '.pt', source='local', force_reload=True)
 model.cuda()
 model.max_det = 2
