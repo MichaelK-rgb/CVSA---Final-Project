@@ -1,10 +1,12 @@
 # Computer Vision in surgical application: Final Project
 Computer Vision in surgical application: Final Project
 
-![Animation](https://user-images.githubusercontent.com/65919086/210080871-b39c3e3f-fdd3-4a0d-9348-725b0fe31ad9.gif)
+![image](https://user-images.githubusercontent.com/65919086/230780734-c963cae7-15ed-4328-8dd4-00eb6d03be1f.png)
 
 # Introduction 
-Tool detection and tool usage classification in OR footage are crucial requirements for future advancements in smart OR technologies such as AI driven robotic assistants as well as effective skill assessment of medical students (Goldbraikh, et al). In this project, we use the suturing skill assessment footage that was used in the 2022 study to train our own CV model for detection of hand + tool combinations and classification of tool usage.
+The growing interest in computer vision and AI tools allows for its implementation in domains such as the operating room, improving the quality of interventional healthcare. Gesture recognition of surgical videos could assist in surgery summarization, progress monitoring, and prediction of surgery steps and duration.
+This project explores different action segmentation methods for surgical video. Gesture recognition is a task that requires both frame-wise accuracy as well as temporal memory of the scene. 
+Specifically, we will investigate how the MS-TCN++ architecture, a state-of-the-art deep learning model developed by Li et al., can be utilized for this purpose. 
 
 ![image](https://user-images.githubusercontent.com/65919086/209307681-56749bda-0356-4f66-9298-2353fe645db8.png)  
          Classification labels: [Right_Needle_driver, Left_Forceps]
