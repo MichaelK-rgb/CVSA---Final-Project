@@ -1,7 +1,6 @@
 # Computer Vision in surgical application: Final Project
 Computer Vision in surgical application: Final Project
-
-![image](https://user-images.githubusercontent.com/65919086/230780734-c963cae7-15ed-4328-8dd4-00eb6d03be1f.png)
+![image](https://user-images.githubusercontent.com/65919086/230780873-1ded6cdf-7bd2-44e4-a3a9-f4362a63595b.png)
 
 # Introduction 
 The growing interest in computer vision and AI tools allows for its implementation in domains such as the operating room, improving the quality of interventional healthcare. Gesture recognition of surgical videos could assist in surgery summarization, progress monitoring, and prediction of surgery steps and duration.
