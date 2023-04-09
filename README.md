@@ -1,38 +1,90 @@
-# ComputerVision_in_OR
-Open Surgery object detection, tool usage classification
+# Computer-vision - Final Project
+## Goal
+Suggest a modification to MSTCN++ aiming to improve performances of gesture recognition task over specific data of physicians performing practice surgery operations.<br>
 
-![Animation](https://user-images.githubusercontent.com/65919086/210080871-b39c3e3f-fdd3-4a0d-9348-725b0fe31ad9.gif)
+## Description
+<ul>
+  <li> Used MSTCN++ pytorch implementation (https://github.com/sj-li/MS-TCN2) of the paper [MS-TCN++: Multi-Stage Temporal Convolutional Network for Action Segmentation](https://arxiv.org/pdf/2006.09220.pdf) to perform gesture recognition over data of physicians performing surgical activity as baseline results. </li>
+  <li> Implementation of modifications to the original architecture such as weighted loss, adding GRU stages and performing down sampling.</li>
+  <li> Reporting evaluation metrics.</li>
+  <li> Tagging videos.</li>
+ </ul>
 
-# Introduction 
-Tool detection and tool usage classification in OR footage are crucial requirements for future advancements in smart OR technologies such as AI driven robotic assistants as well as effective skill assessment of medical students (Goldbraikh, et al). In this project, we use the suturing skill assessment footage that was used in the 2022 study to train our own CV model for detection of hand + tool combinations and classification of tool usage.
+## How to run?
+#### Prepare environment
+1. Clone this project
+2. pip/conda install the requirments.txt file
 
-![image](https://user-images.githubusercontent.com/65919086/209307681-56749bda-0356-4f66-9298-2353fe645db8.png)  
-         Classification labels: [Right_Needle_driver, Left_Forceps]
-         
-# Data   
-The dataset labels 8 classes of interactions of hand + tools:
+### Reproduce results
+#### main.py
+The file which does all of the heavy lifting is `main.py`. <br>
+`main.py` is responsible for running the baseline and modified architectures, performing gesture recognition over the data videos. It also reports loss and accuracy over train and validation sets and generates graphs in clearML. <br>
 
-{Right_Scissors, Left_Scissors ,Right_Needle_driver, Left_Needle_driver, Right_Forceps, Left_Forceps ,Right_Empty, Left_Empty}
 
-After several augmentations and 'horizontal flip', the class distribution of the dataset is as follows:
-![image](https://user-images.githubusercontent.com/65919086/209871355-0f8f0ab5-cd4a-4dd2-b721-53352f359e65.png)
+The script assumes the following paths:
+1. labels are provided in a directory with the absolute path `/datashare/APAS/transcriptions_gestures/` where each video has a corresponding text file with the same name as the video, holding the ground truth labels in the following frame format:
 
-# Model 
-We focused on 2 tasks, showcasing the tradeoff between performance and speed/ complexity: 
--	Creating a model to classify tool usage in *Real-Time*
--	Creating a model to evaluate pre-recorded video with focus on *Accuracy*  
+```
+0 524 G0
+525 662 G1
+663 808 G2
+809 898 G3
+899 970 G4
+```
 
-For this purpose, we experimented with various YOLOv5 models: nano, small and XLarge. finally choosing YOLOv5s for the Real-Time task, and YOLOv5X for the pre-recorded evaluation task. While the XL model did perform marginally better in metrics such as mAP50, mAP75, The difference was very slim. Results with the YOLOv5 small model:
+2. The video features are provided in the absolute path `/datashare/APAS/features/` where the directory tree is the following:
+```
+root
+|->fold0
+|->fold1
+|->fold2
+|->fold3
+|->fold4
+```
+and each fold folder contains all the features of all the videos.
 
-![image](https://user-images.githubusercontent.com/65919086/209872504-b36229ee-15ae-4f65-944e-8e92b8676d17.png)
+3. The Cross validation splitting methods are provided in the absolute path `/datashare/APAS/folds/` where the directory tree is the following:
 
-# Smoothing - sliding window, confidence level threshold
-The basic principle of a ‘sliding window’ smoothing means basing the predicted class in each frame on the most predicted label in the previous ‘k’ frames (in the paper k=15). This smoothing is meant to reduce the tool usage misclassification affected by false detections of our object detection model. To experiment with an upgraded approach, a confidence level threshold was applied to the check the current frame’s predicted YOLO bounding boxes. A different threshold was applied for each model size based on the average confidence level that was observed on the test videos (nano-0.81, small-0.85, XL- 0.87). If the confidence for a detected object is higher than the selected threshold, the detected class is added to the window. When it is lower, the previously detected class is appended to the sliding window. This simple modification reduced the misclassification in certain situations where the tool was occluded or held in a previously unseen position.
+```
+root
+|->valid 0
+|->valid 1
+|->valid 2
+|->valid 3
+|->valid 4
+|->test 0
+|->test 1
+|->test 2
+|->test 3
+|->test 4
+```
+each text file contains list of videos relevant to its own fold.
 
-![image](https://user-images.githubusercontent.com/65919086/209872280-2ef3e072-04be-41f1-963c-409ce66c91da.png)
 
-The Smoothing process using the confidence level threshold and sliding window combination proved to be effective in reducing all scores and misclassification in tool usage and tool usage transitions.
+##### Runing the model:
+To reproduce the results use the following commands:
 
-# Reference to YOLOv5 repo
-https://github.com/ultralytics/yolov5
+1. To get baseline results run:
+```
+main.py --action baseline 
+```
+2. To train the new architecture (our modification) run:
+```
+main.py --action train
+```
+3. To run the tradeoff experiment run:
+```
+main.py --action train_tradeoff
+```
+All the above commands include performing prediction over the test data.
 
+#### test_analysis.py
+This script assumes the same dir structure as `main.py` and outputs all of the metrics described in the report such as Accuracy, F1 and Edit Score over the test data (assumes predictions were already generated).
+Additionally, this scripts plots segmentation plots and metric graphs.
+
+#### video_creator.py
+This script was used to annotate videos with the ground truth labels and their predicted labels.
+
+### Annotated videos:
+This git also includes 3 anotated videos (mp4 files). Those videos were annotated using our final trained model.
+# CV_in_OR-Final-project
