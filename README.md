@@ -8,16 +8,10 @@ The growing interest in computer vision and AI tools allows for its implementati
 This project explores different action segmentation methods for surgical video. Gesture recognition is a task that requires both frame-wise accuracy as well as temporal memory of the scene. 
 Specifically, we will investigate how the MS-TCN++ architecture, a state-of-the-art deep learning model developed by Li et al., can be utilized for this purpose. 
 
-![image](https://user-images.githubusercontent.com/65919086/209307681-56749bda-0356-4f66-9298-2353fe645db8.png)  
-         Classification labels: [Right_Needle_driver, Left_Forceps]
          
 # Data   
-The dataset labels 8 classes of interactions of hand + tools:
-
-{Right_Scissors, Left_Scissors ,Right_Needle_driver, Left_Needle_driver, Right_Forceps, Left_Forceps ,Right_Empty, Left_Empty}
-
-After several augmentations and 'horizontal flip', the class distribution of the dataset is as follows:
-![image](https://user-images.githubusercontent.com/65919086/230780796-538767e0-9666-455e-b0c7-e4e79731e5aa.png)
+This project utilizes data collected by observing and monitoring physicians with varying levels of expertise performing suturing tasks. The data consists of videos captured from two different angles, providing a top-down and side view of the physicians' actions. The input to the MSTCN++ model was visual features of the side-view videos that were extracted through an EfficientNet2-Medium model.
+The original input was frames of resolution 224 x 224, and the augmentations performed on the frames were corner cropping, scale jittering and random rotate.
 
 # Model - base model
 The MS-TCN++ (multi-scale temporal convolutional network) has proven to be effective in video segmentation, gesture recognition, and other video-based tasks. This model was introduced by Li et al. in their 2020 paper, "Temporal Convolutional Networks for Action Segmentation and Detection." 
@@ -26,7 +20,8 @@ In addition, the model includes a dual dilated layer that combines both large an
 
 # Model - our model
 
-![image](https://user-images.githubusercontent.com/65919086/209872504-b36229ee-15ae-4f65-944e-8e92b8676d17.png)
+![image](https://user-images.githubusercontent.com/65919086/230781167-f8edd932-10ed-436c-8360-0d85c6537ecf.png)
+
 
 # Smoothing - sliding window, confidence level threshold
 The basic principle of a ‘sliding window’ smoothing means basing the predicted class in each frame on the most predicted label in the previous ‘k’ frames (in the paper k=15). This smoothing is meant to reduce the tool usage misclassification affected by false detections of our object detection model. To experiment with an upgraded approach, a confidence level threshold was applied to the check the current frame’s predicted YOLO bounding boxes. A different threshold was applied for each model size based on the average confidence level that was observed on the test videos (nano-0.81, small-0.85, XL- 0.87). If the confidence for a detected object is higher than the selected threshold, the detected class is added to the window. When it is lower, the previously detected class is appended to the sliding window. This simple modification reduced the misclassification in certain situations where the tool was occluded or held in a previously unseen position.
