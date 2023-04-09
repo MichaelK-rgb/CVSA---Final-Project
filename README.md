@@ -27,7 +27,7 @@ We offer to several modification to the base architecture, namely the addition o
 # Results
 ![image](https://user-images.githubusercontent.com/65919086/230781556-e14a931a-7e37-433c-a722-d36a0930c602.png)
 
-The Smoothing process using the confidence level threshold and sliding window combination proved to be effective in reducing all scores and misclassification in tool usage and tool usage transitions.
+The confidence level threshold + YOLO tool usage prediction in combination with the LSTM module improved F1@10,25,50 and edit scores.
 
 # Reference to MS-TCN++ repo
 MS-TCN++: Multi-Stage Temporal Convolutional Network for Action Segmentation (TPAMI 2020)
