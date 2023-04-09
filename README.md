@@ -1,7 +1,7 @@
 # Computer Vision in surgical application: Final Project
 Computer Vision in surgical application: Final Project
 
-![image](https://user-images.githubusercontent.com/65919086/230780873-1ded6cdf-7bd2-44e4-a3a9-f4362a63595b.png)
+![image](https://user-images.githubusercontent.com/65919086/230781086-75a9d30c-4d22-4d1b-8e30-ff7f7cb054b2.png)
 
 # Introduction 
 The growing interest in computer vision and AI tools allows for its implementation in domains such as the operating room, improving the quality of interventional healthcare. Gesture recognition of surgical videos could assist in surgery summarization, progress monitoring, and prediction of surgery steps and duration.
@@ -19,12 +19,12 @@ The dataset labels 8 classes of interactions of hand + tools:
 After several augmentations and 'horizontal flip', the class distribution of the dataset is as follows:
 ![image](https://user-images.githubusercontent.com/65919086/230780796-538767e0-9666-455e-b0c7-e4e79731e5aa.png)
 
-# Model 
-We focused on 2 tasks, showcasing the tradeoff between performance and speed/ complexity: 
--	Creating a model to classify tool usage in *Real-Time*
--	Creating a model to evaluate pre-recorded video with focus on *Accuracy*  
+# Model - base model
+The MS-TCN++ (multi-scale temporal convolutional network) has proven to be effective in video segmentation, gesture recognition, and other video-based tasks. This model was introduced by Li et al. in their 2020 paper, "Temporal Convolutional Networks for Action Segmentation and Detection." 
+MS-TCN ++ is a multi-stage architecture for the temporal action segmentation tasks that consists of 2 stages. The first stage generates an initial prediction that is refined by the next ones. In each stage we stack several layers of dilated temporal convolutions covering a large receptive field with few parameters. 
+In addition, the model includes a dual dilated layer that combines both large and small receptive fields. 
 
-For this purpose, we experimented with various YOLOv5 models: nano, small and XLarge. finally choosing YOLOv5s for the Real-Time task, and YOLOv5X for the pre-recorded evaluation task. While the XL model did perform marginally better in metrics such as mAP50, mAP75, The difference was very slim. Results with the YOLOv5 small model:
+# Model - our model
 
 ![image](https://user-images.githubusercontent.com/65919086/209872504-b36229ee-15ae-4f65-944e-8e92b8676d17.png)
 
