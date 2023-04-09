@@ -20,6 +20,8 @@ In addition, the model includes a dual dilated layer that combines both large an
 
 # Model - our model
 
+We offer to several modification to the base architecture, namely the addition of an LSTM module that receives as input a downsampled output from the MS-TCN++ model, and the addition of a previously trained YOLOv5 module that will be activated when the confidence level of the MSTCN++ model is lower than a specific threshold. The YOLOv5 model will predict the tools used from the top-angle video of the same operation, in order to improve the gesture prediction. 
+
 ![image](https://user-images.githubusercontent.com/65919086/230781167-f8edd932-10ed-436c-8360-0d85c6537ecf.png)
 
 
