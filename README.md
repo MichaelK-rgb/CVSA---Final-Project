@@ -1,5 +1,5 @@
-# ComputerVision_in_OR
-Open Surgery object detection, tool usage classification
+# Computer Vision in surgical application: Final Project
+Computer Vision in surgical application: Final Project
 
 ![Animation](https://user-images.githubusercontent.com/65919086/210080871-b39c3e3f-fdd3-4a0d-9348-725b0fe31ad9.gif)
 
