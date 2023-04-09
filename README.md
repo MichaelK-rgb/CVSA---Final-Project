@@ -17,7 +17,7 @@ The dataset labels 8 classes of interactions of hand + tools:
 {Right_Scissors, Left_Scissors ,Right_Needle_driver, Left_Needle_driver, Right_Forceps, Left_Forceps ,Right_Empty, Left_Empty}
 
 After several augmentations and 'horizontal flip', the class distribution of the dataset is as follows:
-![image](https://user-images.githubusercontent.com/65919086/209871355-0f8f0ab5-cd4a-4dd2-b721-53352f359e65.png)
+![image](https://user-images.githubusercontent.com/65919086/230780796-538767e0-9666-455e-b0c7-e4e79731e5aa.png)
 
 # Model 
 We focused on 2 tasks, showcasing the tradeoff between performance and speed/ complexity: 
